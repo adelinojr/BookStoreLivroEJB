@@ -5,6 +5,10 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import br.com.bookstore.model.exceptions.LivroException;
 
 public class GenrenciadorLivro implements Serializable {
@@ -14,17 +18,23 @@ public class GenrenciadorLivro implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Livro> livros;
-	
-	public GenrenciadorLivro() {
-		CriarLivros();
+		
+	private EntityManager em;	
+	public GenrenciadorLivro( EntityManager em) {
+		this.em = em;
 	}
 	
 	public void persist( Livro livro ) throws LivroException{
+		
+		
+		this.em.persist(livro);
+		
+		/*
 		if(isLivro(livro)){
 			this.livros.add(livro); 	
 		}else{
 			throw new LivroException("Livro já existe");
-		}
+		}*/
 	}	
 	public void remove(Livro livro) throws LivroException{
 	    if( !isLivro(livro)) {	
@@ -46,7 +56,9 @@ public class GenrenciadorLivro implements Serializable {
 	}
 	
 	public List<Livro> getTodosOsLivro(){
-		return this.livros;
+		Query query = em.createQuery("select c from Livro c");
+		return query.getResultList();		
+		
 	}
 
 	public Livro getLivro(String isbn){
@@ -82,8 +94,8 @@ public class GenrenciadorLivro implements Serializable {
 	}
 		
 
-	private void CriarLivros(){
-		this.livros = new ArrayList<Livro>();
+	public ArrayList<Livro> CriarLivros(){
+		ArrayList<Livro> lista = new ArrayList<Livro>();
 		Livro l1 = new Livro();
 		l1.setId(1);
 		l1.setTitulo("EJB: Livro de Receitas");
@@ -97,7 +109,7 @@ public class GenrenciadorLivro implements Serializable {
 					  "práticos de desenvolvimento de EJB. aplicar soluções imediatas.");
 	    l1.setCategoria(Genero.Informatica);
 	    l1.setPreco(new BigInteger("150"));
-		this.livros.add(l1);
+		lista.add(l1);
 		
 		Livro l2 = new Livro();
 		l2.setId(2);
@@ -113,7 +125,7 @@ public class GenrenciadorLivro implements Serializable {
 					  "apresentação do site. ");		
 		l2.setCategoria(Genero.Informatica);
 		l2.setPreco(new BigInteger("98"));
-		this.livros.add(l2);
+		lista.add(l2);
 		
 		Livro l3 = new Livro();
 		l3.setId(3);
@@ -129,7 +141,7 @@ public class GenrenciadorLivro implements Serializable {
 					"para o Amazon Editor Choice que indicou os dez melhores livros de computação de 2003 e 2004.");		
 		l3.setCategoria(Genero.Informatica);
 		l3.setPreco(new BigInteger("116"));
-		this.livros.add(l3);
+		lista.add(l3);
 	
 		Livro l4 = new Livro();
 		l4.setId(4);
@@ -144,8 +156,9 @@ public class GenrenciadorLivro implements Serializable {
 					  "covers every aspect of the official standard Web development architecture for JavaEE. ");		
 		l4.setCategoria(Genero.Informatica);
 		l4.setPreco(new BigInteger("214"));
-		this.livros.add(l4);
+		lista.add(l4);
 		
+		return lista;
 	}
 	
 	public ArrayList<Livro> buscarLivro(String nome) throws LivroException{

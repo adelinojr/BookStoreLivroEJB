@@ -3,22 +3,41 @@ package br.com.bookstore.model.livro;
 import java.io.Serializable;
 import java.math.BigInteger;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
 /**
  * Classe que representa um Livro. :-)
  * 
  * @author Adelino Ferreira - bugass@gmail.com
  */
+@Entity
 public class Livro implements Cloneable, Serializable {
 
 	/**
 	 * 
 	 */
+	@Transient
 	private static final long serialVersionUID = 1L;
-	private String isbn;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Column(nullable=false)
+	private String isbn;
+	
+	@Column(nullable=false)
 	private String titulo;
+	
+	@Column(nullable=false)
 	private String autor;
+	
+	@Column(nullable=false)
 	private String editora;
 	
 	private Genero categoria;

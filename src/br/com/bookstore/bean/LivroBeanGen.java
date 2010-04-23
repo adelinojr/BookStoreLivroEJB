@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import br.com.bookstore.model.exceptions.LivroException;
 import br.com.bookstore.model.livro.GenrenciadorLivro;
@@ -14,11 +17,13 @@ import br.com.bookstore.model.livro.Livro;
 @Local(LivroBeanModel.class)
 public class LivroBeanGen implements LivroBeanModel {
 
+	@PersistenceContext(name="BookStoreLivro")
+	private EntityManager em;	
 	
 	private GenrenciadorLivro gem;
 	
 	public LivroBeanGen (){
-		gem = new GenrenciadorLivro();
+		gem = new GenrenciadorLivro(em);
 	}
 	
 	@Override
@@ -29,7 +34,8 @@ public class LivroBeanGen implements LivroBeanModel {
 	@Override
 	public void cadastrarLivro(Livro livro) throws LivroException {
 		
-		gem.persist(livro);
+		em.persist(livro);
+	   //	gem.persist(livro);
 	}
 
 	@Override
@@ -41,7 +47,9 @@ public class LivroBeanGen implements LivroBeanModel {
 	@Override
 	public List<Livro> listarLivros() {
 		// TODO Auto-generated method stub
-		return gem.getTodosOsLivro();
+		Query query = em.createQuery("select c from Livro c");
+		return query.getResultList();				
+		//return gem.getTodosOsLivro();
 	}
 
 	@Override
@@ -54,6 +62,6 @@ public class LivroBeanGen implements LivroBeanModel {
 	public void removerLivro(Livro livro) throws LivroException {
 		gem.remove(livro);
 
-	}
+	}		
 
 }
