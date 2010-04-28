@@ -5,10 +5,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
 import br.com.bookstore.model.exceptions.LivroException;
 
 public class GenrenciadorLivro implements Serializable {
@@ -19,22 +15,15 @@ public class GenrenciadorLivro implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Livro> livros;
 		
-	private EntityManager em;	
-	public GenrenciadorLivro( EntityManager em) {
-		this.em = em;
+	public GenrenciadorLivro( ) {
 	}
 	
 	public void persist( Livro livro ) throws LivroException{
-		
-		
-		this.em.persist(livro);
-		
-		/*
 		if(isLivro(livro)){
 			this.livros.add(livro); 	
 		}else{
 			throw new LivroException("Livro já existe");
-		}*/
+		}
 	}	
 	public void remove(Livro livro) throws LivroException{
 	    if( !isLivro(livro)) {	
@@ -56,9 +45,8 @@ public class GenrenciadorLivro implements Serializable {
 	}
 	
 	public List<Livro> getTodosOsLivro(){
-		Query query = em.createQuery("select c from Livro c");
-		return query.getResultList();		
-		
+
+		return null;
 	}
 
 	public Livro getLivro(String isbn){

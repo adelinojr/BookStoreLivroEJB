@@ -3,12 +3,11 @@ package br.com.bookstore.bean;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
+import br.com.bookstore.integracao.LivroDao;
 import br.com.bookstore.model.exceptions.LivroException;
 import br.com.bookstore.model.livro.GenrenciadorLivro;
 import br.com.bookstore.model.livro.Livro;
@@ -17,13 +16,13 @@ import br.com.bookstore.model.livro.Livro;
 @Local(LivroBeanModel.class)
 public class LivroBeanGen implements LivroBeanModel {
 
-	@PersistenceContext(name="BookStoreLivro")
-	private EntityManager em;	
 	
 	private GenrenciadorLivro gem;
+	@EJB(name="BookStoreLivroEJB/LivroDAOImp",beanInterface=LivroDao.class)
+	private LivroDao em;
 	
 	public LivroBeanGen (){
-		gem = new GenrenciadorLivro(em);
+		gem = new GenrenciadorLivro();
 	}
 	
 	@Override
@@ -34,8 +33,7 @@ public class LivroBeanGen implements LivroBeanModel {
 	@Override
 	public void cadastrarLivro(Livro livro) throws LivroException {
 		
-		em.persist(livro);
-	   //	gem.persist(livro);
+		em.insertLivro(livro);
 	}
 
 	@Override
@@ -45,11 +43,8 @@ public class LivroBeanGen implements LivroBeanModel {
 	}
 
 	@Override
-	public List<Livro> listarLivros() {
-		// TODO Auto-generated method stub
-		Query query = em.createQuery("select c from Livro c");
-		return query.getResultList();				
-		//return gem.getTodosOsLivro();
+	public List<Livro> listarLivros() {		
+		return em.selectLivros();
 	}
 
 	@Override
