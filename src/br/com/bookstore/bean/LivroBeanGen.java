@@ -27,19 +27,18 @@ public class LivroBeanGen implements LivroBeanModel {
 	
 	@Override
 	public ArrayList<Livro> buscaLivro(String dado) throws LivroException {
-		return gem.buscarLivro(dado);
+		return em.searchLivro(dado);
 	}
 
 	@Override
 	public void cadastrarLivro(Livro livro) throws LivroException {
-		
-		em.insertLivro(livro);
+			em.insertLivro(livro);	
 	}
 
 	@Override
 	public void editarLivro(Livro livro) throws LivroException {
 	
-			gem.editar(livro);
+			em.updateLivro(livro);
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public class LivroBeanGen implements LivroBeanModel {
 
 	@Override
 	public void removerLivro(Livro livro) throws LivroException {
-		gem.remove(livro);
+		em.deleteLivro(livro);
 
 	}		
 

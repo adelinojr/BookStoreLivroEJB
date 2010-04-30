@@ -51,7 +51,7 @@ public interface LivroDao {
 	 * @return o livro cujo ISBN foi passado como parâmetro, ou null, caso não exista livro cadastrado
 	 * 			com o ISBN em questão.
 	 */
-	public Livro getLivro( String isbn );
+	public Livro getLivro( String isbn ) throws LivroException;
 	
 	
 	public ArrayList<Livro> searchLivro(String dado) throws LivroException;

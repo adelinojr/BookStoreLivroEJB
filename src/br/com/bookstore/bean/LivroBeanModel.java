@@ -8,7 +8,7 @@ import br.com.bookstore.model.livro.Livro;
 
 /**
  * Fachada que concentra o ponto de entrada para todas
- * as operações que envolvem o gerenciamento de livros.
+ * as operações que envolvem o gerenciamento de livros EJB Livro.
  * 
  * @author Adelino Ferreira- bugass@gmail.com
  */
