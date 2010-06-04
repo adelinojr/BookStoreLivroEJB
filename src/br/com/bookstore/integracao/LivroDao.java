@@ -3,7 +3,6 @@ package br.com.bookstore.integracao;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.bookstore.model.exceptions.LivroException;
 import br.com.bookstore.model.livro.Livro;
 
 public interface LivroDao {
@@ -15,7 +14,7 @@ public interface LivroDao {
 	 * @throws LivroException Caso o livro a ser cadastrado já exista na base de dados ou possua alguma
 	 * 							informação inválida..
 	 */
-	public void insertLivro( Livro livro ) throws LivroException;
+	public void insertLivro( Livro livro );
 	
 	/**
 	 * Exclui um livro da base de dados da aplicação.
@@ -23,7 +22,7 @@ public interface LivroDao {
 	 * @param livro O Livro a ser removido
 	 * @throws LivroException Caso o livro a ser removido não exista.
 	 */
-	public void deleteLivro( Livro livro ) throws LivroException;
+	public void deleteLivro( Livro livro ) throws Exception;
 	
 	/**
 	 * Permite modificar as informações cadastrais de um livro. Não deve ser possível alterar o ISBN
@@ -34,7 +33,7 @@ public interface LivroDao {
 	 * @throws LivroException Caso existam restrições nos dados fornecidos através do novo objeto passado
 	 * 							como parâmetro ou o livro a ser modificado não exista nas bases de dados.
 	 */
-	public void updateLivro( Livro livro ) throws LivroException;
+	public void updateLivro( Livro livro );
 	
 	/**
 	 * Obtém uma lista com todos os livros cadastrados na aplicação.
@@ -51,8 +50,9 @@ public interface LivroDao {
 	 * @return o livro cujo ISBN foi passado como parâmetro, ou null, caso não exista livro cadastrado
 	 * 			com o ISBN em questão.
 	 */
-	public Livro getLivro( String isbn ) throws LivroException;
+	public Livro getLivro( String isbn ) throws Exception;
 	
 	
-	public ArrayList<Livro> searchLivro(String dado) throws LivroException;
+	public ArrayList<Livro> searchLivro(String dado) throws Exception;
+	
 }

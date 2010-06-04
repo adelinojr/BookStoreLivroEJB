@@ -9,36 +9,53 @@ import javax.ejb.Stateless;
 
 import br.com.bookstore.integracao.LivroDao;
 import br.com.bookstore.model.exceptions.LivroException;
-import br.com.bookstore.model.livro.GenrenciadorLivro;
 import br.com.bookstore.model.livro.Livro;
 
 @Stateless
 @Local(LivroBeanModel.class)
 public class LivroBeanGen implements LivroBeanModel {
 
-	
-	private GenrenciadorLivro gem;
 	@EJB(name="BookStoreLivroEJB/LivroDAOImp",beanInterface=LivroDao.class)
 	private LivroDao em;
 	
 	public LivroBeanGen (){
-		gem = new GenrenciadorLivro();
 	}
 	
 	@Override
 	public ArrayList<Livro> buscaLivro(String dado) throws LivroException {
-		return em.searchLivro(dado);
+		try {
+			return em.searchLivro(dado);
+		} catch (Exception e) {
+			throw new LivroException("Livro não encontrado");
+		}
 	}
 
 	@Override
 	public void cadastrarLivro(Livro livro) throws LivroException {
-			em.insertLivro(livro);	
+		   try {
+			if(this.isLivro(em.getLivro(livro.getIsbn()))){
+				em.insertLivro(livro);
+			   }else{
+				   throw new LivroException("Livro já existe");
+			   }
+		} catch (Exception e) {
+			throw new LivroException("Entre em contato com Administrador- ERRO 0037");
+		}
+			   
 	}
 
 	@Override
 	public void editarLivro(Livro livro) throws LivroException {
-	
-			em.updateLivro(livro);
+		 try {
+			if(!this.isLivro(em.getLivro(livro.getIsbn()))){
+				 em.updateLivro(livro);
+			 }else{
+				 throw new LivroException("Livro Não Existe");
+			 }
+		} catch (Exception e) {
+			throw new LivroException("Entre em contato com Administrador- ERRO 0039");
+		}
+			
 	}
 
 	@Override
@@ -47,15 +64,28 @@ public class LivroBeanGen implements LivroBeanModel {
 	}
 
 	@Override
-	public Livro obterLivro(String isbn) {
-		// TODO Auto-generated method stub
-		return gem.getLivro(isbn);
+	public Livro obterLivro(String isbn) throws LivroException {
+		try {
+			return em.getLivro(isbn);
+		} catch (Exception e) {
+			throw new LivroException("Entre em contato com Administrador- ERRO 0031");
+		}
 	}
 
 	@Override
 	public void removerLivro(Livro livro) throws LivroException {
-		em.deleteLivro(livro);
-
+		try {
+			em.deleteLivro(livro);
+		} catch (Exception e) {
+			throw new LivroException("Entre em contato com Administrador- ERRO 0032");
+		}
 	}		
 
+	private boolean isLivro( Livro livro ){
+		 boolean result = true;
+		 if(livro != null){
+			 result = false;
+		 }
+		return result;
+	}	
 }

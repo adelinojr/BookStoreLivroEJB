@@ -56,8 +56,9 @@ public interface LivroBeanModel {
 	 * @param isbn o ISBN usado para recuperar o livro específico.
 	 * @return o livro cujo ISBN foi passado como parâmetro, ou null, caso não exista livro cadastrado
 	 * 			com o ISBN em questão.
+	 * @throws LivroException 
 	 */
-	public Livro obterLivro( String isbn );
+	public Livro obterLivro( String isbn ) throws LivroException;
 	
 	
 	public ArrayList<Livro> buscaLivro(String dado) throws LivroException;

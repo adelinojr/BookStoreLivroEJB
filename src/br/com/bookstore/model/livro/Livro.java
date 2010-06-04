@@ -1,7 +1,6 @@
 package br.com.bookstore.model.livro;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,7 +51,7 @@ public class Livro implements Cloneable, Serializable {
 	 * o preço do livro em centavos. No momento em que precisarmos
 	 * mostrar o preço, basta usar uma máscara ou converter que mostre
 	 * como moeda. */
-	private BigInteger preco;
+	private Integer preco;
 
 	
 	
@@ -136,11 +135,11 @@ public class Livro implements Cloneable, Serializable {
 		this.resenha = resenha;
 	}
 
-	public BigInteger getPreco() {
+	public Integer getPreco() {
 		return preco;
 	}
 
-	public void setPreco(BigInteger preco) {
+	public void setPreco(Integer preco) {
 		this.preco = preco;
 	}
 
@@ -165,6 +164,11 @@ public class Livro implements Cloneable, Serializable {
 				+ ", isbn=" + isbn + ", numeroDePaginas=" + numeroDePaginas
 				+ ", preco=" + preco + ", resenha=" + resenha + ", titulo="
 				+ titulo + "]";
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.isbn.hashCode();
 	}
 
 	@Override
